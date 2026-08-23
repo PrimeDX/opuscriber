@@ -32,5 +32,5 @@
 - [x] 6.1 go build compiles, go test passes
 - [x] 6.2 docker build succeeds
 - [x] 6.3 Model download + end-to-end transcription with real audio file
-- [ ] 6.4 Idempotency: re-run skips already-processed files
-- [ ] 6.5 Interactive TTY check: docker run without -it prints error
+- [x] 6.4 Idempotency: re-run skips already-processed files
+- [x] 6.5 Interactive TTY check: docker run without -it prints error
