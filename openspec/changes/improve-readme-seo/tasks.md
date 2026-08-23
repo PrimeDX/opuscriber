@@ -28,14 +28,14 @@
 
 ## 4. GitHub Repo
 
-- [ ] 4.1 Create GitHub repository `primedx/opuscriber` via `gh repo create`
-- [ ] 4.2 Set repo description: "Offline speech-to-text and SRT subtitle generation for Opus audio — powered by Whisper. Single binary, no cloud."
-- [ ] 4.3 Set topics: `go`, `golang`, `whisper`, `speech-to-text`, `transcription`, `offline`, `opus`, `srt`, `cli`, `tui`, `whisper-cpp`
-- [ ] 4.4 Push all changes (committed files + demo.gif) to `main`
+- [x] 4.1 Create GitHub repository `primedx/opuscriber` via `gh repo create`
+- [x] 4.2 Set repo description: "Offline speech-to-text and SRT subtitle generation for Opus audio — powered by Whisper. Single binary, no cloud."
+- [x] 4.3 Set topics: `go`, `golang`, `whisper`, `speech-to-text`, `transcription`, `offline`, `opus`, `srt`, `cli`, `tui`, `whisper-cpp`
+- [x] 4.4 Push all changes (committed files + demo.gif) to `main`
 
 ## 5. Verification
 
-- [ ] 5.1 Read final README.md against spec: check all SEO terms present, model table accurate, install section honest
-- [ ] 5.2 Verify `docs/ARCHITECTURE.md` exists with no placeholder content
-- [ ] 5.3 Verify demo.gif displays correctly in GitHub README preview
-- [ ] 5.4 Verify GitHub repo description and topics are set correctly
+- [x] 5.1 Read final README.md against spec: check all SEO terms present, model table accurate, install section honest
+- [x] 5.2 Verify `docs/ARCHITECTURE.md` exists with no placeholder content
+- [x] 5.3 Verify demo.gif displays correctly in GitHub README preview
+- [x] 5.4 Verify GitHub repo description and topics are set correctly
