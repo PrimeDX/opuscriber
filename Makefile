@@ -1,15 +1,32 @@
 BINARY=opuscriber
-DOCKER_IMAGE=opuscriber
+WHISPER_VERSION=v1.9.3
+WHISPER_DIR=whisper.cpp
 MODEL?=medium
 LANG?=pt
 
-.PHONY: build test run run-interactive docker-build model-download clean
+.PHONY: build test run run-interactive clean
 
-build:
-	CGO_ENABLED=0 go build -o $(BINARY) .
+# ── Build ────────────────────────────────────────────────────────────────────
 
-test:
-	go test ./...
+libwhisper.a:
+	@if [ ! -d $(WHISPER_DIR) ]; then \
+		echo "Cloning whisper.cpp $(WHISPER_VERSION)..."; \
+		git clone --depth 1 --branch $(WHISPER_VERSION) \
+			https://github.com/ggml-org/whisper.cpp.git $(WHISPER_DIR); \
+	fi
+	@if [ ! -f libwhisper.a ]; then \
+		echo "Building whisper.cpp..."; \
+		cmake -S $(WHISPER_DIR) -B $(WHISPER_DIR)/build -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release; \
+		cmake --build $(WHISPER_DIR)/build -j$$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4); \
+		find $(WHISPER_DIR)/build -name 'lib*.a' -exec cp {} . \; ; \
+		cp $(WHISPER_DIR)/include/whisper.h .; \
+		cp $(WHISPER_DIR)/ggml/include/*.h .; \
+	fi
+
+build: libwhisper.a
+	CGO_CFLAGS="-I$$(pwd)" CGO_LDFLAGS="-L$$(pwd)" CGO_ENABLED=1 go build -o $(BINARY) .
+
+# ── Run (for development) ────────────────────────────────────────────────────
 
 run: build
 	./$(BINARY) --input ./in --output ./out --models ./models --lang $(LANG) --model $(MODEL)
@@ -17,33 +34,18 @@ run: build
 run-interactive: build
 	./$(BINARY) --interactive
 
-docker-build:
-	docker build -t $(DOCKER_IMAGE) .
+# ── Test ─────────────────────────────────────────────────────────────────────
 
-docker-build-multi:
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(DOCKER_IMAGE) .
+test:
+	go test ./...
 
-model-download:
-	mkdir -p models
-	docker run --rm -v $(PWD)/models:/models $(DOCKER_IMAGE) sh -c "download-ggml-model.sh $(MODEL) /models"
-
-docker-run:
-	mkdir -p in out models
-	docker run --rm \
-		-v $(PWD)/in:/audio/in \
-		-v $(PWD)/out:/audio/out \
-		-v $(PWD)/models:/models \
-		$(DOCKER_IMAGE) \
-		--lang $(LANG) --model $(MODEL)
-
-docker-run-interactive:
-	mkdir -p in out models
-	docker run -it --rm \
-		-v $(PWD)/in:/audio/in \
-		-v $(PWD)/out:/audio/out \
-		-v $(PWD)/models:/models \
-		$(DOCKER_IMAGE) \
-		--interactive
+# ── Clean ────────────────────────────────────────────────────────────────────
 
 clean:
-	rm -f $(BINARY)
+	rm -f $(BINARY) lib*.a *.h
+	rm -rf $(WHISPER_DIR)
+
+# ── Demo ────────────────────────────────────────────────────────────────────
+
+demo:
+	vhs demo.tape

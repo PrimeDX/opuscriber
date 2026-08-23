@@ -1,0 +1,13 @@
+# Build artifacts
+opuscriber
+lib*.a
+*.h
+
+# whisper.cpp clone
+whisper.cpp/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
