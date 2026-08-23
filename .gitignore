@@ -11,3 +11,8 @@ whisper.cpp/
 .vscode/
 *.swp
 *.swo
+
+# Model files (downloaded by user)
+models/
+in/
+out/
