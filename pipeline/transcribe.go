@@ -60,7 +60,7 @@ func decodeToWAV(input, output string) error {
 }
 
 func runWhisper(wavPath, modelPath, lang, outBase string) error {
-	cmd := exec.Command("/usr/local/bin/whisper-cli",
+	cmd := exec.Command("whisper-cli",
 		"-m", modelPath,
 		"-l", lang,
 		"-f", wavPath,

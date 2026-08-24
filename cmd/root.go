@@ -46,7 +46,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().StringVarP(&lang, "lang", "l", "pt", "Language code for transcription")
+	rootCmd.Flags().StringVarP(&lang, "lang", "l", "auto", "Language code for transcription (auto for auto-detect)")
 	rootCmd.Flags().StringVarP(&modelSize, "model", "m", "medium", "Whisper model size (tiny, base, small, medium, large)")
 	rootCmd.Flags().StringVar(&inputDir, "input", "/audio/in", "Input audio directory")
 	rootCmd.Flags().StringVar(&outputDir, "output", "/audio/out", "Output directory for .txt and .srt")
